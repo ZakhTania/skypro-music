@@ -6,11 +6,12 @@ import playlist01 from "public/img/playlist01.png";
 import playlist02 from "public/img/playlist02.png";
 import playlist03 from "public/img/playlist03.png";
 import { Wrapper } from "@/components/Wrapper";
+import { Container } from "@/components/Container";
 
 export default function Home() {
   return (
     <Wrapper>
-      <div className="container">
+      <Container>
         <main className="main">
           <nav className="main__nav nav">
             <div className="nav__logo logo">
@@ -788,7 +789,7 @@ export default function Home() {
           </div>
         </div>
         <footer className="footer"></footer>
-      </div>
+      </Container>
     </Wrapper>
   );
 }
