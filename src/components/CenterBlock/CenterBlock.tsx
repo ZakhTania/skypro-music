@@ -1,8 +1,8 @@
-import { Search } from "@/components/Search";
 import styles from "./CenterBlock.module.css";
+import { Search } from "@/components/Search";
 import { Filter } from "@/components/Filter";
-import { PlaylistContent } from "@/components/PlaylistContent";
 import { Heading } from "@/components/Heading";
+import { PlaylistContent } from "@/components/PlaylistContent";
 
 export default function CenterBlock() {
   return (
