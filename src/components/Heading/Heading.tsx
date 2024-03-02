@@ -1,9 +1,9 @@
 import styles from "./Heading.module.css";
 
-type HeadingProps = {
+type HeadingType = {
     text: string;
 }
-export default function Heading({text} : HeadingProps) {
+export default function Heading({text} : HeadingType) {
     return (
         <h2 className={styles.h2}>{text}</h2>
     )

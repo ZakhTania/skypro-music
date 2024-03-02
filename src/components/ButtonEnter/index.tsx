@@ -1,1 +1,1 @@
-export {default as ButtonEnter} from "./ButtonEnter";
+export { default as ButtonEnter } from "./ButtonEnter";
