@@ -1,1 +1,1 @@
-export {default as CenterBlock} from "./CenterBlock";
+export { default as CenterBlock } from "./CenterBlock";
