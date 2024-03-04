@@ -13,7 +13,7 @@ export default function Filter({ list, title, isOpen, onClick }: FilterType) {
   return (
     <div className={styles.wrap}>
       <button
-        className={cn(styles.button, stylesMod.btnText)}
+        className={isOpen ? cn(styles.button, stylesMod.btnTextActive) : cn(styles.button, stylesMod.btnText)}
         onClick={onClick}
       >
         {title}

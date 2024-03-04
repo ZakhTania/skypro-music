@@ -19,7 +19,11 @@
     color: #ad61ff;
     cursor: pointer;
 }
-
+.btnTextActive {
+    border-color: #ad61ff;
+    color: #ad61ff;
+    cursor: pointer;
+}
 .btnIcon:active svg {
     fill: transparent;
     stroke: #ffffff;
