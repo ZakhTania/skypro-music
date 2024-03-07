@@ -1,6 +1,6 @@
 import styles from "./CenterBlock.module.css";
 import { Search } from "@/components/Search";
-import { Filter } from "@/components/Filter";
+import { FilterWrapper } from "@/components/FilterWrapper";
 import { Heading } from "@/components/Heading";
 import { PlaylistContent } from "@/components/PlaylistContent";
 
@@ -9,7 +9,7 @@ export default function CenterBlock() {
     <div className={styles.centerblock}>
       <Search />
       <Heading text="Треки" />
-      <Filter />
+      <FilterWrapper />
       <PlaylistContent />
     </div>
   );

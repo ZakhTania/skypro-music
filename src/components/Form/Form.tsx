@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
 import styles from "./Form.module.css";
 
-type FormProps = {
+type FormType = {
   children: any;
 };
-export default function Form({ children }: FormProps) {
+export default function Form({ children }: FormType) {
   return <form className={styles.form}>{children}</form>;
 }

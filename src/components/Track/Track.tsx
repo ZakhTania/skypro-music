@@ -1,14 +1,14 @@
 import { SVG } from "../SVG";
 import styles from "./Track.module.css";
 
-type TrackProps = {
+type TrackType = {
   title: string;
-  feat?: string;  
+  feat?: string;
   author: string;
   album: string;
   time: string;
 };
-export default function Track({ title, author, album, feat, time }: TrackProps) {
+export default function Track({ title, author, album, feat, time }: TrackType) {
   return (
     <div className={styles.playlistItem}>
       <div className={styles.track}>
