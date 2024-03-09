@@ -1,10 +1,13 @@
 import styles from "./Volume.module.css";
 import stylesMod from "@/app/Modifiers.module.css";
 import { SVG } from "@/components/SVG";
-import { Input } from "@/components/Input";
 import cn from "classnames";
 
-export default function Volume() {
+type VolumeType = {
+  volume: number;
+  onVolumeChange: (volume: number) => void;
+};
+export default function Volume({ volume, onVolumeChange }: VolumeType) {
   return (
     <div className={styles.volumeBlock}>
       <div className={styles.content}>
@@ -12,10 +15,17 @@ export default function Volume() {
           <SVG className={styles.svg} icon="icon-volume" />
         </div>
         <div className={cn(styles.progress, stylesMod.btn)}>
-          <Input
+          <input
             className={cn(styles.progressLine, stylesMod.btn)}
             type="range"
-            name="range"
+            name="volume"
+            min={0}
+            step={0.05}
+            max={1}
+            value={volume}
+            onChange={(e) => {
+              onVolumeChange(e.currentTarget.valueAsNumber);
+            }}
           />
         </div>
       </div>
