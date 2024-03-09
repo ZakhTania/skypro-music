@@ -2,9 +2,12 @@ import cn from "classnames";
 import { SVG } from "@/components/SVG";
 import styles from "./PlayerTrack.module.css";
 import stylesMod from "@/app/Modifiers.module.css";
+import { TracksType } from "@/api/tracksApi";
 
-
-export default function PlayerTrack() {
+interface PlayerTrackType {
+  currentTrack: TracksType | null;
+}
+export default function PlayerTrack({ currentTrack }: PlayerTrackType) {
   return (
     <div className={styles.trackPlay}>
       <div className={styles.contain}>
@@ -13,12 +16,12 @@ export default function PlayerTrack() {
         </div>
         <div className={styles.author}>
           <a className={styles.authorLink} href="http://">
-            Ты та...
+            {currentTrack?.author}
           </a>
         </div>
         <div className={styles.album}>
           <a className={styles.albumLink} href="http://">
-            Баста
+            {currentTrack?.name}
           </a>
         </div>
       </div>

@@ -52,6 +52,8 @@
     grid-column: 2;
     grid-area: author;
     min-width: 49px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .authorLink {
@@ -61,6 +63,7 @@
     line-height: 24px;
     color: #ffffff;
     white-space: nowrap;
+
 }
 
 .album {
@@ -68,6 +71,8 @@
     grid-column: 2;
     grid-area: album;
     min-width: 49px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .albumLink {
@@ -76,6 +81,7 @@
     font-size: 13px;
     line-height: 24px;
     color: #ffffff;
+    white-space: nowrap;
 }
 
 .likeDis {
