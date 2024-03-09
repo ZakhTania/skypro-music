@@ -2,7 +2,7 @@
 import { Wrapper } from "@/components/Wrapper";
 import { Container } from "@/components/Container";
 import { Main } from "@/components/Main";
-import { PlayerBar } from "@/components/PlayerBar";
+import { PlayerBar } from "@/components/Player/PlayerBar";
 import { useEffect, useState } from "react";
 import getTracks, { TracksType } from "@/api/tracksApi";
 

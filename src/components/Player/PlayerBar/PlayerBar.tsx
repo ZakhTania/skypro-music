@@ -2,10 +2,10 @@ import styles from "./PlayerBar.module.css";
 import timeFormat from "@/lib/timeFormat";
 import { useRef, useState } from "react";
 import { TracksType } from "@/api/tracksApi";
-import { ProgressBar } from "@/components/ProgressBar";
-import { PlayerControls } from "@/components/PlayerBar/PlayerControls";
-import { PlayerTrack } from "@/components/PlayerBar/PlayerTrack";
-import { Volume } from "@/components/PlayerBar/Volume";
+import { ProgressBar } from "@/components/Player/ProgressBar";
+import { PlayerControls } from "@/components/Player/PlayerControls";
+import { PlayerTrack } from "@/components/Player/PlayerTrack";
+import { Volume } from "@/components/Player/Volume";
 
 type PlayerBarType = {
   currentTrack: TracksType | null;
