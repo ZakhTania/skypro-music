@@ -1,11 +1,11 @@
 import Image from "next/image";
-import styles from "./Playlist.module.css";
+import styles from "./PlaylistCover.module.css";
 
-type PlaylistType = {
-    src : string,
+type PlaylistCoverType = {
+    src : string;
     alt : string
 }
-export default function Playlist({src, alt} : PlaylistType) {
+export default function PlaylistCover({src, alt} : PlaylistCoverType) {
     return (
         <div className={styles.item}>
         <a className={styles.link} href="#">

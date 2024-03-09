@@ -1,9 +1,6 @@
-import playlist01 from "public/img/playlist01.png";
-import playlist02 from "public/img/playlist02.png";
-import playlist03 from "public/img/playlist03.png";
 import styles from "./Sidebar.module.css";
 import { Personal } from "@/components/Personal";
-import { Playlist } from "@/components/Playlist";
+import { PlaylistCover } from "@/components/PlaylistCover";
 
 
 export default function Sidebar() {
@@ -12,9 +9,9 @@ export default function Sidebar() {
       <Personal />
       <div className={styles.block}>
         <div className={styles.list}>
-          <Playlist src={playlist01} alt="day's playlist" />
-          <Playlist src={playlist02} alt="one hundred dance hits" />
-          <Playlist src={playlist03} alt="indie" />
+          <PlaylistCover src={"/img/playlist01.png"} alt="day's playlist" />
+          <PlaylistCover src={"/img/playlist02.png"} alt="one hundred dance hits" />
+          <PlaylistCover src={"/img/playlist03.png"} alt="indie" />
         </div>
       </div>
     </div>
