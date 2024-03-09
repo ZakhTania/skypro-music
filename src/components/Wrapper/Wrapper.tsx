@@ -1,7 +1,8 @@
+import { ReactNode } from "react";
 import styles from "./Wrapper.module.css";
 
 type WrapperType = {
-  children: any;
+  children: ReactNode;
 };
 
 export default function Wrapper({ children }: WrapperType) {
