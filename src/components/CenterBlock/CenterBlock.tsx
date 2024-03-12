@@ -3,14 +3,28 @@ import { Search } from "@/components/Search";
 import { FilterWrapper } from "@/components/FilterWrapper";
 import { Heading } from "@/components/Heading";
 import { PlaylistContent } from "@/components/PlaylistContent";
+import { TracksType } from "@/api/tracksApi";
 
-export default function CenterBlock() {
+interface CenterBlockType {
+  isLoading: boolean;
+  tracks: TracksType[];
+  setCurrentTrack: (track: TracksType) => void;
+}
+export default function CenterBlock({
+  isLoading,
+  tracks,
+  setCurrentTrack,
+}: CenterBlockType) {
   return (
     <div className={styles.centerblock}>
       <Search />
       <Heading text="Треки" />
       <FilterWrapper />
-      <PlaylistContent />
+      <PlaylistContent
+        isLoading={isLoading}
+        tracks={tracks}
+        setCurrentTrack={setCurrentTrack}
+      />
     </div>
   );
 }

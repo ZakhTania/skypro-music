@@ -6,6 +6,7 @@
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+
 }
 
 .title {
@@ -26,6 +27,7 @@
 }
 
 .contentPlaylist {
+    max-height: 370px;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -34,6 +36,15 @@
     -ms-flex-direction: column;
     flex-direction: column;
     overflow-y: auto;
+}
+
+.contentPlaylist::-webkit-scrollbar {
+    width: 4px;
+}
+
+.contentPlaylist::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
 }
 
 .titleCol {
@@ -68,5 +79,5 @@
 .col04 {
     width: 60px;
     text-align: end;
-}
 
+}
