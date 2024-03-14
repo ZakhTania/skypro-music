@@ -2,27 +2,31 @@ import cn from "classnames";
 import styles from "./PlayerControls.module.css";
 import stylesMod from "@/app/Modifiers.module.css";
 import { SVG } from "@/components/SVG";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import {
+  nextTrack,
+  prevTrack,
+  toggleShuffled,
+} from "@/store/features/playlistSlice";
 
-interface PlayerControlsType {
-  isPlaying: boolean;
+type PlayerControlsType = {
   isLooping: boolean;
   togglePlay: () => void;
   toggleLoop: () => void;
-}
+};
 
 export default function PlayerControls({
   togglePlay,
-  isPlaying,
   toggleLoop,
   isLooping,
 }: PlayerControlsType) {
-  function handelBtnInDev() {
-    alert("Еще не реализовано");
-  }
+  const dispatch = useAppDispatch();
+  const isShuffled = useAppSelector((store) => store.playlist.isShuffled);
+  const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
   return (
     <div className={styles.playerControls}>
       <button
-        onClick={handelBtnInDev}
+        onClick={() => dispatch(prevTrack())}
         className={cn(styles.playerBtnPrev, stylesMod.btn)}
       >
         <SVG className={styles.playerBtnPrevSvg} icon={"icon-prev"} />
@@ -38,7 +42,7 @@ export default function PlayerControls({
         )}
       </button>
       <button
-        onClick={handelBtnInDev}
+        onClick={() => dispatch(nextTrack())}
         className={cn(styles.playerBtnNext, stylesMod.btn)}
       >
         <SVG className={styles.playerBtnNextSvg} icon={"icon-next"} />
@@ -54,8 +58,12 @@ export default function PlayerControls({
         <SVG className={styles.playerBtnRepeatSvg} icon={"icon-repeat"} />
       </button>
       <button
-        onClick={handelBtnInDev}
-        className={cn(styles.playerBtnRepeat, stylesMod.btnIcon)}
+        onClick={() => dispatch(toggleShuffled())}
+        className={
+          isShuffled
+            ? cn(styles.playerBtnRepeat, stylesMod.btnIconActive)
+            : cn(styles.playerBtnRepeat, stylesMod.btnIcon)
+        }
       >
         <SVG className={styles.playerBtnShuffleSvg} icon={"icon-shuffle"} />
       </button>

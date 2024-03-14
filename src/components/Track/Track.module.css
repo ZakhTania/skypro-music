@@ -1,3 +1,17 @@
+@keyframes pulse {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
 .playlistItem {
     width: 100%;
     display: block;
@@ -53,6 +67,24 @@
     -ms-flex-pack: center;
     justify-content: center;
     margin-right: 17px;
+    position: relative;
+}
+
+.current {
+    background-color: #B672FF;
+    border-radius: 100%;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+}
+
+.pulse {
+    background-color: #B672FF;
+    border-radius: 100%;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    animation: pulse 0.5s linear infinite;
 }
 
 .titleSvg {
