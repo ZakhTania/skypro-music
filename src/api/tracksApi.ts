@@ -1,4 +1,4 @@
-export interface TracksType {
+export type TracksType = {
   id: number;
   name: string;
   author: string;
@@ -9,14 +9,14 @@ export interface TracksType {
   logo: null | string;
   track_file: string;
   stared_user: StaredUser[];
-}
-interface StaredUser {
+};
+type StaredUser = {
   id: number;
   username: string;
   first_name: string;
   last_name: string;
   email: string;
-}
+};
 
 const TRACKS_URL = "https://skypro-music-api.skyeng.tech/catalog/track/all/";
 export default function getTracks(): Promise<TracksType[]> {
