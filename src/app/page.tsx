@@ -8,24 +8,18 @@ import getTracks, { TracksType } from "@/api/tracksApi";
 
 export default function Home() {
   const [tracks, setTracks] = useState<TracksType[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [currentTrack, setCurrentTrack] = useState<TracksType | null>(null);
+
   useEffect(() => {
     getTracks().then((response) => {
       setTracks(response);
-      setIsLoading(false);
     });
   }, []);
-  console.log(currentTrack);
+
   return (
     <Wrapper>
       <Container>
-        <Main
-          isLoading={isLoading}
-          tracks={tracks}
-          setCurrentTrack={setCurrentTrack}
-        />
-        {currentTrack && <PlayerBar currentTrack={currentTrack} />}
+        <Main tracks={tracks} />
+        <PlayerBar />
       </Container>
     </Wrapper>
   );
