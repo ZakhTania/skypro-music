@@ -41,39 +41,33 @@ const playlistSlice = createSlice({
         () => 0.5 - Math.random()
       );
     },
-    nextTrack: (state) => {
-      const currentTracks = state.isShuffled
-        ? state.shuffledTracks
-        : state.tracks;
-      const currentTrackIndex = currentTracks.findIndex(
-        (item) => item.id === state.currentTrack?.id
-      );
-      const newTrack = currentTracks[currentTrackIndex + 1];
-      if (!newTrack) {
-        state.currentTrack = state.tracks[0];
-      } else {
-        state.currentTrack = newTrack;
-      }
-      state.isPlaying = true;
-    },
-    prevTrack: (state) => {
-      const currentTracks = state.isShuffled
-        ? state.shuffledTracks
-        : state.tracks;
-      const currentTrackIndex = currentTracks.findIndex(
-        (item) => item.id === state.currentTrack?.id
-      );
-      const newTrack = currentTracks[currentTrackIndex - 1];
-      if (!newTrack) {
-        state.currentTrack = state.tracks[currentTracks.length - 1];
-      } else {
-        state.currentTrack = newTrack;
-      }
-      state.isPlaying = true;
+    nextTrack: changeTrack(1),
+    prevTrack: changeTrack(-1),
+    setFiltredTracks: (
+      state,
+      action: PayloadAction<{ authors?: string[]; searchValue?: string }>
+    ) => {
+      state.filterOptions = {
+        authors: action.payload.authors || state.filterOptions.authors,
+        searchValue:
+          action.payload.searchValue || state.filterOptions.searchValue,
+      };
     },
   },
 });
-
+function changeTrack(direction: number) {
+  return (state: TrackListType) => {
+    const currentTracks = state.isShuffled
+      ? state.shuffledTracks
+      : state.tracks;
+    let newIndex =
+      currentTracks.findIndex((item) => item.id === state.currentTrack?.id) +
+      direction;
+    newIndex = (newIndex + currentTracks.length) % currentTracks.length;
+    state.currentTrack = state.tracks[newIndex];
+    state.isPlaying = true;
+  };
+}
 export const {
   setTracks,
   toggleShuffled,
