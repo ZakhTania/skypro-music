@@ -19,17 +19,14 @@ type StaredUser = {
 };
 
 const TRACKS_URL = "https://skypro-music-api.skyeng.tech/catalog/track/all/";
-export default function getTracks(): Promise<TracksType[]> {
-  return fetch(TRACKS_URL, {
+export default async function getTracks(): Promise<TracksType[]> {
+  const response = await fetch(TRACKS_URL, {
     method: "GET",
-  })
-    .then((response) => {
+  });
+
       if (!response.ok) {
-        throw new Error("Ошибка");
+        throw new Error("Ошибка при получении данных");
       }
       return response.json();
-    })
-    .catch((error: Error) => {
-      alert(error.message);
-    });
+
 }
