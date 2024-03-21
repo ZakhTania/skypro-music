@@ -4,9 +4,9 @@ import styles from "./PlayerTrack.module.css";
 import stylesMod from "@/app/Modifiers.module.css";
 import { TracksType } from "@/api/tracksApi";
 
-interface PlayerTrackType {
+type PlayerTrackType = {
   currentTrack: TracksType | null;
-}
+};
 export default function PlayerTrack({ currentTrack }: PlayerTrackType) {
   return (
     <div className={styles.trackPlay}>

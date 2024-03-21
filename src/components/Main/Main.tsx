@@ -4,20 +4,14 @@ import { CenterBlock } from "@/components/CenterBlock";
 import { Sidebar } from "../Sidebar";
 import { TracksType } from "@/api/tracksApi";
 
-interface MainType {
-  isLoading: boolean;
+type MainType = {
   tracks: TracksType[];
-  setCurrentTrack: (track: TracksType) => void;
-}
-export default function Main({ isLoading, tracks, setCurrentTrack }: MainType) {
+};
+export default function Main({ tracks }: MainType) {
   return (
     <main className={styles.main}>
       <Navigation />
-      <CenterBlock
-        isLoading={isLoading}
-        tracks={tracks}
-        setCurrentTrack={setCurrentTrack}
-      />
+      <CenterBlock tracks={tracks} />
       <Sidebar />
     </main>
   );

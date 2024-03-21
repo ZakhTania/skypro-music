@@ -1,18 +1,19 @@
+"use client";
 import styles from "./PlayerBar.module.css";
 import timeFormat from "@/lib/timeFormat";
 import { useRef, useState } from "react";
-import { TracksType } from "@/api/tracksApi";
 import { ProgressBar } from "@/components/Player/ProgressBar";
 import { PlayerControls } from "@/components/Player/PlayerControls";
 import { PlayerTrack } from "@/components/Player/PlayerTrack";
 import { Volume } from "@/components/Player/Volume";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { nextTrack, setIsPlaying } from "@/store/features/playlistSlice";
 
-type PlayerBarType = {
-  currentTrack: TracksType | null;
-};
-export default function PlayerBar({ currentTrack }: PlayerBarType) {
+export default function PlayerBar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const dispatch = useAppDispatch();
+  const currentTrack = useAppSelector((store) => store.playlist.currentTrack);
+  const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
   const [isLooping, setIsLooping] = useState(false);
   const [currentProgress, setCurrentProgress] = useState(0);
   const [volume, setVolume] = useState(0.2);
@@ -34,14 +35,14 @@ export default function PlayerBar({ currentTrack }: PlayerBarType) {
   const handleStart = () => {
     if (audioRef.current) {
       audioRef.current.play();
-      setIsPlaying(true);
+      dispatch(setIsPlaying(true));
     }
   };
 
   const handleStop = () => {
     if (audioRef.current) {
       audioRef.current.pause();
-      setIsPlaying(false);
+      dispatch(setIsPlaying(false));
     }
   };
 
@@ -55,6 +56,10 @@ export default function PlayerBar({ currentTrack }: PlayerBarType) {
     if (!audioRef.current) return;
     audioRef.current.currentTime = e;
   };
+
+  if (audioRef.current?.ended) {
+    dispatch(nextTrack());
+  }
 
   return (
     <div className={styles.bar}>
@@ -83,7 +88,6 @@ export default function PlayerBar({ currentTrack }: PlayerBarType) {
               <div className={styles.barPlayer}>
                 <PlayerControls
                   togglePlay={togglePlay}
-                  isPlaying={isPlaying}
                   toggleLoop={toggleLoop}
                   isLooping={isLooping}
                 />

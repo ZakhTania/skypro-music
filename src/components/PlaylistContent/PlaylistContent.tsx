@@ -1,4 +1,3 @@
-"use client";
 import { Track } from "@/components/Track";
 import styles from "./PlaylistContent.module.css";
 import cn from "classnames";
@@ -6,16 +5,10 @@ import { SVG } from "@/components/SVG";
 import { TrackSkeleton } from "../TrackSkeleton";
 import { TracksType } from "@/api/tracksApi";
 
-interface PlaylistContentType {
-  isLoading: boolean;
+type PlaylistContentType = {
   tracks: TracksType[];
-  setCurrentTrack: (track: TracksType) => void;
-}
-export default function PlaylistContent({
-  isLoading,
-  tracks,
-  setCurrentTrack,
-}: PlaylistContentType) {
+};
+export default function PlaylistContent({ tracks }: PlaylistContentType) {
   return (
     <div className={styles.content}>
       <div className={styles.title}>
@@ -27,20 +20,9 @@ export default function PlaylistContent({
         </div>
       </div>
       <div className={styles.contentPlaylist}>
-        {isLoading
-          ? Array.from({ length: 5 }).map((_, index) => (
-              <TrackSkeleton key={index} />
-            ))
-          : tracks.map((track) => (
-              <Track
-                key={track.id}
-                title={track.name}
-                author={track.author}
-                album={track.album}
-                time={track.duration_in_seconds}
-                onClick={() => setCurrentTrack(track)}
-              />
-            ))}
+        {tracks.map((track) => (
+          <Track key={track.id} track={track} tracks={tracks} />
+        ))}
       </div>
     </div>
   );
