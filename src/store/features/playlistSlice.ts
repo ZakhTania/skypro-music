@@ -7,7 +7,13 @@ type TrackListType = {
   shuffledTracks: [] | TracksType[];
   currentTrack: null | TracksType;
   isPlaying: boolean;
-  filterOptions: { authors: string[]; searchValue: string };
+  isFiltered: boolean;
+  filterOptions: {
+    authors: string[];
+    years: string;
+    genres: string[];
+    searchValue: string;
+  };
   filteredTracks: [] | TracksType[];
 };
 
@@ -21,8 +27,11 @@ const initialState: TrackListType = {
   shuffledTracks: [],
   currentTrack: null,
   isPlaying: true,
+  isFiltered: false,
   filterOptions: {
     authors: [],
+    years: "по умолчанию",
+    genres: [],
     searchValue: "",
   },
   filteredTracks: [],
@@ -52,21 +61,55 @@ const playlistSlice = createSlice({
     prevTrack: changeTrack(-1),
     setFiltredTracks: (
       state,
-      action: PayloadAction<{ authors?: string[]; searchValue?: string }>
+      action: PayloadAction<{
+        authors?: string[];
+        years?: string;
+        genres?: string[];
+        searchValue?: string;
+      }>
     ) => {
       state.filterOptions = {
         authors: action.payload.authors || state.filterOptions.authors,
+        years: action.payload.years || state.filterOptions.years,
+        genres: action.payload.genres || state.filterOptions.genres,
         searchValue:
           action.payload.searchValue || state.filterOptions.searchValue,
       };
+
       state.filteredTracks = state.tracks.filter((track) => {
         const hasAuthors = state.filterOptions.authors.length !== 0;
-        const isSearchValueIncluded = track.name.toLowerCase().includes(state.filterOptions.searchValue.toLowerCase());
-        if (hasAuthors) {
-          return  state.filterOptions.authors.includes(track.author) && isSearchValueIncluded;
+        const hasGenres = state.filterOptions.genres.length !== 0;
+        const isSearchValueIncluded = track.name
+          .toLowerCase()
+          .includes(state.filterOptions.searchValue.toLowerCase());
+        if (hasAuthors && !hasGenres) {
+          return (
+            state.filterOptions.authors.includes(track.author) &&
+            isSearchValueIncluded
+          );
+        }
+        if(hasGenres && !hasAuthors) {
+          return (
+            state.filterOptions.genres.includes(track.genre) &&
+            isSearchValueIncluded
+          );
+        }
+        if(hasAuthors && hasGenres) {
+          return (
+            state.filterOptions.authors.includes(track.author) &&
+            state.filterOptions.genres.includes(track.genre) &&
+            isSearchValueIncluded
+          );
         }
         return isSearchValueIncluded;
-      })
+      });
+
+      state.isFiltered =
+        state.filterOptions.authors.length !== 0 ||
+        state.filterOptions.genres.length !== 0 ||
+        state.filterOptions.searchValue !== ""
+          ? true
+          : false;
     },
   },
 });
@@ -90,6 +133,6 @@ export const {
   setCurrentTrack,
   nextTrack,
   prevTrack,
-  setFiltredTracks
+  setFiltredTracks,
 } = playlistSlice.actions;
 export const playlistReducer = playlistSlice.reducer;
