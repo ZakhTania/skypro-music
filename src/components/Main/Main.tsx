@@ -4,6 +4,7 @@ import { CenterBlock } from "@/components/CenterBlock";
 import { Sidebar } from "../Sidebar";
 import { TracksType } from "@/api/tracksApi";
 
+
 type MainType = {
   tracks: TracksType[];
 };

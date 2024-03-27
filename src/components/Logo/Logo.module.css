@@ -1,5 +1,5 @@
 .logo {
-    width: 113.33px;
+    width: 114px;
     height: 43px;
     padding: 13px 0 13px 0;
     background-color: transparent;
@@ -7,7 +7,7 @@
 }
 
 .logoImage {
-    width: 113.33px;
-    height: 17px;
+    width: 114px;
+    height: auto;
     color: #181818;
 }

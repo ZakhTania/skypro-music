@@ -17,14 +17,16 @@ export default function PlayerBar() {
   const [isLooping, setIsLooping] = useState(false);
   const [currentProgress, setCurrentProgress] = useState(0);
   const [volume, setVolume] = useState(0.2);
-
-  const duration = audioRef.current ? audioRef.current.duration : 230;
-  const durationDisplay = audioRef.current
-    ? timeFormat(Math.floor(audioRef.current.duration))
-    : null;
-  const elapsedDisplay = audioRef.current
-    ? timeFormat(Math.floor(currentProgress))
-    : null;
+  let duration = 230;
+  let durationDisplay = "00:00";
+  let elapsedDisplay = "00:00";
+  if (audioRef.current) {
+    if (audioRef.current.duration) {
+      duration = audioRef.current.duration;
+      durationDisplay = timeFormat(Math.floor(audioRef.current.duration));
+      elapsedDisplay = timeFormat(Math.floor(currentProgress));
+    }
+  }
 
   const handleVolumeChange = (volumeValue: number) => {
     if (!audioRef.current) return;
@@ -76,7 +78,7 @@ export default function PlayerBar() {
           />
           <div className={styles.barContent}>
             <div className={styles.elapsedOverDuration}>
-              {elapsedDisplay} / {durationDisplay}
+                { elapsedDisplay } / { durationDisplay }
             </div>
             <ProgressBar
               currentProgress={currentProgress}

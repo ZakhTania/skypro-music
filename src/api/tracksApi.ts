@@ -2,7 +2,7 @@ export type TracksType = {
   id: number;
   name: string;
   author: string;
-  realease_date: string;
+  release_date: string;
   genre: string;
   duration_in_seconds: number;
   album: string;
