@@ -4,13 +4,15 @@ import styles from "./PlaylistContent.module.css";
 import cn from "classnames";
 import { SVG } from "@/components/SVG";
 import { TracksType } from "@/api/tracksApi";
-import { useAppSelector } from "@/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { useEffect, useState } from "react";
+import { setTracks } from "@/store/features/playlistSlice";
 
 type PlaylistContentType = {
   tracks: TracksType[];
 };
 export default function PlaylistContent({ tracks }: PlaylistContentType) {
+  const dispatch = useAppDispatch();
   const isFiltered = useAppSelector((store) => store.playlist.isFiltered);
   const filteredTracks = useAppSelector(
     (store) => store.playlist.filteredTracks
@@ -19,6 +21,10 @@ export default function PlaylistContent({ tracks }: PlaylistContentType) {
     (store) => store.playlist.filterOptions.years
   );
   const [trackList, setTrackList] = useState(tracks);
+
+  useEffect(() => {
+    dispatch(setTracks(tracks));
+  }, [tracks]);
 
   useEffect(() => {
     setTrackList((prev) => (prev = isFiltered ? filteredTracks : tracks));
@@ -45,7 +51,6 @@ export default function PlaylistContent({ tracks }: PlaylistContentType) {
     }
   }, [filterYearsOption]);
 
-  console.log(trackList);
   return (
     <div className={styles.content}>
       <div className={styles.title}>
