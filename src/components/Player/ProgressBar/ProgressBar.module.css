@@ -11,10 +11,14 @@
     background: transparent;
     position: relative;
     overflow: hidden;
+    transition: 0.3s;
+    position: absolute;
+    top: 28px;
 }
 
 .styledProgressInput:hover {
     --progress-height: 8px;
+    top: 26px;
 }
 
 .styledProgressInput::-webkit-slider-runnable-track {
