@@ -11,7 +11,7 @@ export default function Logo() {
           className={styles.logoImage}
           src={logo}
           alt="logo image"
-          width={113.33}
+          width={114}
           height={17}
         />
         </Link>
