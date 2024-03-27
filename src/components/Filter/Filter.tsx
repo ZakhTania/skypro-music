@@ -22,7 +22,7 @@ export default function Filter({
   const countSelected = typeof selected === 'object' && selected.length > 0;
   return (
     <div className={styles.wrap}>
-      {countSelected  && <div className={styles.filerCounter}>{selected.length}</div>}
+      {countSelected  && <div className={styles.filterCounter}>{selected.length}</div>}
       <button
         className={isOpen ? cn(styles.button, stylesMod.btnTextActive) : cn(styles.button, stylesMod.btnText)}
         onClick={onClick}

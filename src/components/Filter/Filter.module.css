@@ -14,7 +14,7 @@
 .wrap {
     position: relative;
 }
-.filerCounter {
+.filterCounter {
 position: absolute;
 background: rgb(173, 97, 255);
 width: 26px;

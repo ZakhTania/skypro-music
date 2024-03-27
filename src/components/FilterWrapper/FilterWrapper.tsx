@@ -5,6 +5,8 @@ import { useCallback, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { setFiltredTracks } from "@/store/features/playlistSlice";
 
+const yearsArr: string[] = ["по умолчанию", "сначала новые", "сначала старые"];
+
 export default function FilterWrapper() {
   const [activeFilter, setActiveFilter] = useState<null | string>(null);
   const tracks = useAppSelector((store) => store.playlist.tracks);
@@ -23,11 +25,7 @@ export default function FilterWrapper() {
     author = author === "-" ? "Неизвестный исполнитель" : author;
     return author;
   });
-  const yearsArr: string[] = [
-    "по умолчанию",
-    "сначала новые",
-    "сначала старые",
-  ];
+
   const genresArr: string[] = tracks.map(({ genre }) => {
     return genre;
   });
@@ -44,12 +42,12 @@ export default function FilterWrapper() {
   const authors: string[] = useMemo(() => {
     return getFilterArr(authorsArr);
   }, [getFilterArr, authorsArr]);
-  const years: string[] = useMemo(() => { 
+  const years: string[] = useMemo(() => {
     return getFilterArr(yearsArr);
-  }, [getFilterArr])
-  const genres: string[] = useMemo(() => { 
+  }, [getFilterArr]);
+  const genres: string[] = useMemo(() => {
     return getFilterArr(genresArr);
-  }, [getFilterArr, genresArr])
+  }, [getFilterArr, genresArr]);
 
   function toggleSelected(item: string, title: string) {
     console.log(item);
