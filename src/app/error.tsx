@@ -1,5 +1,6 @@
 'use client';
 
+import { Wrapper } from '@/components/Wrapper';
 import { useEffect } from 'react';
 
 export default function Error({ error, reset }: any) {
@@ -9,9 +10,9 @@ export default function Error({ error, reset }: any) {
   }, [error]);
 
   return (
-    <div>
+    <Wrapper>
       <h2>Что-то пошло не так!</h2>
       <button onClick={reset}>Попробовать снова</button>
-    </div>
+    </Wrapper>
   );
 }
