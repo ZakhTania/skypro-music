@@ -1,20 +1,13 @@
 import styles from "./CenterBlock.module.css";
-import { Search } from "@/components/Search";
-import { FilterWrapper } from "@/components/FilterWrapper";
-import { Heading } from "@/components/Heading";
-import { PlaylistContent } from "@/components/PlaylistContent";
-import { TracksType } from "@/api/tracksApi";
+import { ReactNode } from "react";
 
 type CenterBlockType = {
-  tracks: TracksType[];
+  children: ReactNode;
 };
-export default function CenterBlock({ tracks }: CenterBlockType) {
+export default function CenterBlock({children}: CenterBlockType) {
   return (
     <div className={styles.centerblock}>
-      <Search />
-      <Heading text="Треки" />
-      <FilterWrapper />
-      <PlaylistContent tracks={tracks} />
+      {children}
     </div>
   );
 }

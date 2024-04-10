@@ -1,18 +1,37 @@
+// import { getPlayLists } from "@/api/selectionListAPI";
+import { SelectionListType, getPlayLists } from "@/api/selectionListAPI";
 import styles from "./Sidebar.module.css";
 import { Personal } from "@/components/Personal";
 import { PlaylistCover } from "@/components/PlaylistCover";
+type SidebarType = {
+  isSidebar: boolean;
+};
+export default async function Sidebar({ isSidebar }: SidebarType) {
+  let playLists: SelectionListType[];
+  try {
+    playLists = await getPlayLists();
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
 
-
-export default function Sidebar() {
   return (
     <div className={styles.sidebar}>
       <Personal />
       <div className={styles.block}>
-        <div className={styles.list}>
-          <PlaylistCover src={"/img/playlist01.png"} alt="day's playlist" />
-          <PlaylistCover src={"/img/playlist02.png"} alt="one hundred dance hits" />
-          <PlaylistCover src={"/img/playlist03.png"} alt="indie" />
-        </div>
+        {isSidebar && (
+          <div className={styles.list}>
+            {playLists.map((playList, index) => {
+              return (
+                <PlaylistCover
+                  key={`playList${index}`}
+                  src={`/img/playlist0${index + 1}.png`}
+                  alt={String(playList.name)}
+                  id={`${playList.id}`}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
