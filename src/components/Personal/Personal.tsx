@@ -1,7 +1,7 @@
 import { SVG } from "@/components/SVG";
 import styles from "./Personal.module.css";
 
-export default function Perstnal() {
+export default function Personal() {
   return (
     <div className={styles.personal}>
       <p className={styles.personalName}>Sergey.Ivanov</p>

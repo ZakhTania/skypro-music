@@ -1,13 +1,14 @@
-import Link from "next/link";
 import styles from "./ButtonEnter.module.css";
 
 type ButtonType = {
   text: string;
+  disabled?: boolean;
+  onClick: ()=> void;
 };
-export default function ButtonEnter({ text }: ButtonType) {
+export default function ButtonEnter({ text, disabled, onClick }: ButtonType) {
   return (
-    <button className={styles.btnEnter}>
-      <Link href={"/"}>{text}</Link>
+    <button className={styles.btnEnter} disabled={disabled} onClick={onClick} >
+      {text}
     </button>
   );
 }

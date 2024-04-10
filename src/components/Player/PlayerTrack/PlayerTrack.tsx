@@ -2,10 +2,10 @@ import cn from "classnames";
 import { SVG } from "@/components/SVG";
 import styles from "./PlayerTrack.module.css";
 import stylesMod from "@/app/Modifiers.module.css";
-import { TracksType } from "@/api/tracksApi";
+import { TrackType } from "@/api/tracksApi";
 
 type PlayerTrackType = {
-  currentTrack: TracksType | null;
+  currentTrack: TrackType | null;
 };
 export default function PlayerTrack({ currentTrack }: PlayerTrackType) {
   return (

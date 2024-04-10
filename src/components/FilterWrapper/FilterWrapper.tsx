@@ -3,7 +3,7 @@ import styles from "./FilterWrapper.module.css";
 import { Filter } from "../Filter";
 import { useCallback, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { setFiltredTracks } from "@/store/features/playlistSlice";
+import { setFilters, setSorting } from "@/store/features/playlistSlice";
 
 const yearsArr: string[] = ["по умолчанию", "сначала новые", "сначала старые"];
 
@@ -13,9 +13,7 @@ export default function FilterWrapper() {
   const selectedAuthors = useAppSelector(
     (store) => store.playlist.filterOptions.authors
   );
-  const selectedYears = useAppSelector(
-    (store) => store.playlist.filterOptions.years
-  );
+  const selectedYears = useAppSelector((store) => store.playlist.sortStatus);
   const selectedGenres = useAppSelector(
     (store) => store.playlist.filterOptions.genres
   );
@@ -50,11 +48,10 @@ export default function FilterWrapper() {
   }, [getFilterArr, genresArr]);
 
   function toggleSelected(item: string, title: string) {
-    console.log(item);
     if (title === "исполнителю") {
       item = item === "Неизвестный исполнитель" ? "-" : item;
       dispatch(
-        setFiltredTracks({
+        setFilters({
           authors: selectedAuthors.includes(item)
             ? selectedAuthors.filter((author) => author !== item)
             : [...selectedAuthors, item],
@@ -63,14 +60,12 @@ export default function FilterWrapper() {
     }
     if (title === "году выпуска") {
       dispatch(
-        setFiltredTracks({
-          years: selectedYears.includes(item) ? "по умолчанию" : item,
-        })
+        setSorting(selectedYears.includes(item) ? "по умолчанию" : item)
       );
     }
     if (title === "жанру") {
       dispatch(
-        setFiltredTracks({
+        setFilters({
           genres: selectedGenres.includes(item)
             ? selectedGenres.filter((author) => author !== item)
             : [...selectedGenres, item],
@@ -97,8 +92,6 @@ export default function FilterWrapper() {
 
   function handleFilterClick(filterName: string) {
     setActiveFilter((prev) => (prev === filterName ? null : filterName));
-    console.log(selectedGenres);
-    console.log(selectedYears);
   }
   return (
     <div className={styles.filter}>
