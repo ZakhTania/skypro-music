@@ -23,9 +23,9 @@ export default function Signup() {
     username: [],
     password: [],
   });
-  const isEmailErr = error.email.length !== 0;
-  const isUsernameErr = error.username.length !== 0;
-  const isPasswordErr = error.password.length !== 0;
+  const isEmailErr = error.email?.length !== 0;
+  const isUsernameErr = error.username?.length !== 0;
+  const isPasswordErr = error.password?.length !== 0;
   console.log(isEmailErr, isPasswordErr, isUsernameErr);
   const [userData, setUserData] = useState<userDataType>({
     email: "",
@@ -34,6 +34,7 @@ export default function Signup() {
   });
 
   function getReg() {
+
     setError({
       email: [],
       username: [],
@@ -46,7 +47,7 @@ export default function Signup() {
       username: userData.username,
     })
       .then(() => {
-        console.log("wow");
+
         router.replace("/signin");
       })
       .catch((error) => {
