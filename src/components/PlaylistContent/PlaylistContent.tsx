@@ -29,25 +29,6 @@ export default function PlaylistContent({
 
   const currentTracks = isFiltered ? filteredTracks : tracks;
 
-  // useEffect(() => {
-  //   if (filterYearsOption === "сначала новые") {
-  //     const tracks = [...currentTracks]
-  //       .slice()
-  //       .sort((a, b) => (a.release_date < b.release_date ? 1 : -1));
-  //     dispatch(setFilters(tracks));
-  //   }
-  //   if (filterYearsOption === "сначала старые") {
-  //     setTrackList(
-  //       [...currentTracks]
-  //         .slice()
-  //         .sort((a, b) => (a.release_date > b.release_date ? 1 : -1))
-  //     );
-  //   }
-  //   if (filterYearsOption === "по умолчанию") {
-  //     setTrackList((prev) => (prev = isFiltered ? filteredTracks : tracks));
-  //   }
-  // }, [filterYearsOption]);
-
   return (
     <div className={styles.content}>
       <div className={styles.title}>
