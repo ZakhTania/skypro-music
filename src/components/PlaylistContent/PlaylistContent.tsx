@@ -3,53 +3,31 @@ import { Track } from "@/components/Track";
 import styles from "./PlaylistContent.module.css";
 import cn from "classnames";
 import { SVG } from "@/components/SVG";
-import { TracksType } from "@/api/tracksApi";
+import { TrackType } from "@/api/tracksApi";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { setTracks } from "@/store/features/playlistSlice";
 
 type PlaylistContentType = {
-  tracks: TracksType[];
+  tracks: TrackType[];
+  isFilter: boolean;
 };
-export default function PlaylistContent({ tracks }: PlaylistContentType) {
+export default function PlaylistContent({
+  tracks,
+  isFilter,
+}: PlaylistContentType) {
   const dispatch = useAppDispatch();
-  const isFiltered = useAppSelector((store) => store.playlist.isFiltered);
+  const isFiltered =
+    useAppSelector((store) => store.playlist.isFiltered) && isFilter;
   const filteredTracks = useAppSelector(
     (store) => store.playlist.filteredTracks
   );
-  const filterYearsOption = useAppSelector(
-    (store) => store.playlist.filterOptions.years
-  );
-  const [trackList, setTrackList] = useState(tracks);
 
   useEffect(() => {
     dispatch(setTracks(tracks));
   }, [tracks]);
 
-  useEffect(() => {
-    setTrackList((prev) => (prev = isFiltered ? filteredTracks : tracks));
-  }, [isFiltered, filteredTracks]);
-
-  const defaultTracks = trackList;
-
-  useEffect(() => {
-    if (filterYearsOption === "сначала новые") {
-      const tracks = defaultTracks
-        .slice()
-        .sort((a, b) => (a.release_date < b.release_date ? 1 : -1));
-      setTrackList(tracks);
-    }
-    if (filterYearsOption === "сначала старые") {
-      setTrackList(
-        defaultTracks
-          .slice()
-          .sort((a, b) => (a.release_date > b.release_date ? 1 : -1))
-      );
-    }
-    if (filterYearsOption === "по умолчанию") {
-      setTrackList((prev) => (prev = isFiltered ? filteredTracks : tracks));
-    }
-  }, [filterYearsOption]);
+  const currentTracks = isFiltered ? filteredTracks : tracks;
 
   return (
     <div className={styles.content}>
@@ -62,7 +40,7 @@ export default function PlaylistContent({ tracks }: PlaylistContentType) {
         </div>
       </div>
       <div className={styles.contentPlaylist}>
-        {isFiltered && trackList.length === 0 && (
+        {currentTracks.length === 0 && (
           <>
             <div>Нет элементов удовлетворяющих условиям.</div>
             <div>
@@ -71,7 +49,7 @@ export default function PlaylistContent({ tracks }: PlaylistContentType) {
             </div>
           </>
         )}
-        {trackList.map((track) => (
+        {currentTracks.map((track) => (
           <Track key={track.id} track={track} tracks={tracks} />
         ))}
       </div>

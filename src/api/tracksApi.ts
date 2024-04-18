@@ -1,4 +1,4 @@
-export type TracksType = {
+export type TrackType = {
   id: number;
   name: string;
   author: string;
@@ -19,14 +19,13 @@ type StaredUser = {
 };
 
 const TRACKS_URL = "https://skypro-music-api.skyeng.tech/catalog/track/all/";
-export default async function getTracks(): Promise<TracksType[]> {
+export default async function getTracks(): Promise<TrackType[]> {
   const response = await fetch(TRACKS_URL, {
     method: "GET",
   });
 
-      if (!response.ok) {
-        throw new Error("Ошибка при получении данных");
-      }
-      return response.json();
-
+  if (!response.ok) {
+    throw new Error("Ошибка при получении данных");
+  }
+  return response.json();
 }

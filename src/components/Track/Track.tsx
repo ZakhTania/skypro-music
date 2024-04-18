@@ -3,15 +3,15 @@ import timeFormat from "@/lib/timeFormat";
 import { SVG } from "../SVG";
 import styles from "./Track.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { TracksType } from "@/api/tracksApi";
+import { TrackType } from "@/api/tracksApi";
 import { setCurrentTrack } from "@/store/features/playlistSlice";
 import { useEffect, useRef } from "react";
 
-type TrackType = {
-  track: TracksType;
-  tracks: TracksType[];
+type TrackPropsType = {
+  track: TrackType;
+  tracks: TrackType[];
 };
-export default function Track({ track, tracks }: TrackType) {
+export default function Track({ track, tracks }: TrackPropsType) {
   const { name, author, album, duration_in_seconds, id } = track;
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((store) => store.playlist.currentTrack);
