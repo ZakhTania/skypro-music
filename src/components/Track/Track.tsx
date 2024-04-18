@@ -2,21 +2,37 @@
 import timeFormat from "@/lib/timeFormat";
 import { SVG } from "../SVG";
 import styles from "./Track.module.css";
+import stylesMod from "@/app/Modifiers.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { TrackType } from "@/api/tracksApi";
 import { setCurrentTrack } from "@/store/features/playlistSlice";
-import { useEffect, useRef } from "react";
+import { MouseEvent, useEffect, useRef } from "react";
+import cn from "classnames";
+import {
+  deleteFavoriteTrack,
+  postFavoriteTrack,
+} from "@/api/favoriteTracksAPI";
 
 type TrackPropsType = {
   track: TrackType;
   tracks: TrackType[];
+  isLiked: boolean;
 };
-export default function Track({ track, tracks }: TrackPropsType) {
-  const { name, author, album, duration_in_seconds, id } = track;
+export default function Track({ track, tracks, isLiked }: TrackPropsType) {
+  const { name, author, album, duration_in_seconds, id, stared_user } = track;
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((store) => store.playlist.currentTrack);
   const currentTrackRef = useRef<HTMLDivElement | null>(null);
   const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
+  // const authID = JSON.parse(Cookies.get("user") ?? "").id;
+  // const [isLiked, setIsLiked] = useState(false);
+  // useEffect(() => {
+  //   if( authID !== undefined) {
+  //     setIsLiked(!!stared_user.find(({ id }) => id === authID));
+  //   }
+
+  // }, [stared_user, authID]);
+  const accessToken = useAppSelector((store) => store.auth.token.access);
   useEffect(() => {
     if (!currentTrackRef.current) {
       return;
@@ -26,6 +42,15 @@ export default function Track({ track, tracks }: TrackPropsType) {
       behavior: "smooth",
     });
   }, [currentTrack]);
+  const handleLikeClick = (event: MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (isLiked) {
+      deleteFavoriteTrack(accessToken, id);
+    } else {
+      postFavoriteTrack(accessToken, id);
+    }
+  };
   return (
     <div
       onClick={() => dispatch(setCurrentTrack({ currentTrack: track, tracks }))}
@@ -54,8 +79,14 @@ export default function Track({ track, tracks }: TrackPropsType) {
         <div className={styles.album}>
           <div className={styles.albumLink}>{album}</div>
         </div>
-        <div>
-          <SVG className={styles.timeSvg} icon="icon-like " />
+        <div onClick={(event: MouseEvent) => handleLikeClick(event)}>
+          <SVG
+            className={cn(
+              styles.likeSvg,
+              isLiked ? stylesMod.btnLiked : stylesMod.btnDontliked
+            )}
+            icon="icon-like "
+          />
           <span className={styles.timeText}>
             {timeFormat(duration_in_seconds)}
           </span>

@@ -15,6 +15,7 @@ export default async function MainTracksPage() {
       tracks={tracks}
       isFilter={true}
       isSidebar={true}
+      favoriteTracklist={false}
     />
   );
 }

@@ -11,18 +11,21 @@ import { setTracks } from "@/store/features/playlistSlice";
 type PlaylistContentType = {
   tracks: TrackType[];
   isFilter: boolean;
+  favoriteTracklist: boolean;
 };
 export default function PlaylistContent({
   tracks,
   isFilter,
+  favoriteTracklist,
 }: PlaylistContentType) {
   const dispatch = useAppDispatch();
   const isFiltered =
     useAppSelector((store) => store.playlist.isFiltered) && isFilter;
+
   const filteredTracks = useAppSelector(
     (store) => store.playlist.filteredTracks
   );
-
+  const authID = useAppSelector((store) => store.auth.user.id);
   useEffect(() => {
     dispatch(setTracks(tracks));
   }, [tracks]);
@@ -49,8 +52,17 @@ export default function PlaylistContent({
             </div>
           </>
         )}
-        {currentTracks.map((track) => (
-          <Track key={track.id} track={track} tracks={tracks} />
+        {currentTracks.map((track: TrackType) => (
+          <Track
+            key={track.id}
+            track={track}
+            tracks={tracks}
+            isLiked={
+              favoriteTracklist
+                ? true
+                : !!(track.stared_user ?? []).find(({ id }) => id === authID)
+            }
+          />
         ))}
       </div>
     </div>

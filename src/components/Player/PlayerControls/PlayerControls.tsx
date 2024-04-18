@@ -49,21 +49,19 @@ export default function PlayerControls({
       </button>
       <button
         onClick={toggleLoop}
-        className={
-          isLooping
-            ? cn(styles.playerBtnRepeat, stylesMod.btnIconActive)
-            : cn(styles.playerBtnRepeat, stylesMod.btnIcon)
-        }
+        className={cn(
+          styles.playerBtnRepeat,
+          isLooping ? stylesMod.btnIconActive : stylesMod.btnIcon
+        )}
       >
         <SVG className={styles.playerBtnRepeatSvg} icon={"icon-repeat"} />
       </button>
       <button
         onClick={() => dispatch(toggleShuffled())}
-        className={
-          isShuffled
-            ? cn(styles.playerBtnRepeat, stylesMod.btnIconActive)
-            : cn(styles.playerBtnRepeat, stylesMod.btnIcon)
-        }
+        className={cn(
+          styles.playerBtnRepeat,
+          isShuffled ? stylesMod.btnIconActive : stylesMod.btnIcon
+        )}
       >
         <SVG className={styles.playerBtnShuffleSvg} icon={"icon-shuffle"} />
       </button>

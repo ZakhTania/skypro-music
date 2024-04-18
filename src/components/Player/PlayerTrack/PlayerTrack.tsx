@@ -30,9 +30,9 @@ export default function PlayerTrack({ currentTrack }: PlayerTrackType) {
         <div className={cn(styles.like, stylesMod.btnIcon)}>
           <SVG className={styles.likeSvg} icon="icon-like" />
         </div>
-        <div className={cn(styles.dislike, stylesMod.btnIcon)}>
+        {/* <div className={cn(styles.dislike, stylesMod.btnIcon)}>
           <SVG className={styles.dislikeSvg} icon="icon-dislike" />
-        </div>
+        </div> */}
       </div>
     </div>
   );

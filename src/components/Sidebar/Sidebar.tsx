@@ -1,4 +1,3 @@
-// import { getPlayLists } from "@/api/selectionListAPI";
 import { SelectionListType, getPlayLists } from "@/api/selectionListAPI";
 import styles from "./Sidebar.module.css";
 import { Personal } from "@/components/Personal";

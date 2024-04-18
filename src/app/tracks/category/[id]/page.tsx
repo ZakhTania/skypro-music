@@ -20,6 +20,7 @@ export default async function Category({ params }: CategoryType) {
         tracks={selectionList.items}
         isFilter={false}
         isSidebar={false}
+        favoriteTracklist={false}
       />
   );
 }
