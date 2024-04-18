@@ -60,37 +60,18 @@ const playlistSlice = createSlice({
     nextTrack: changeTrack(1),
     prevTrack: changeTrack(-1),
     setSorting: (state, action: PayloadAction<string>) => {
-      console.log(action.payload);
-      const prevFilteredTracks = state.filteredTracks;
       state.sortStatus = action.payload;
-      if (state.sortStatus === "сначала новые") {
-        const tracks = state.isFiltered
-          ? [...state.filteredTracks]
-          : [...state.tracks];
-        tracks.sort((a, b) => (a.release_date < b.release_date ? 1 : -1));
-        state.filteredTracks = tracks;
-        console.log(tracks);
-      }
-      if (state.sortStatus === "сначала старые") {
-        const tracks = state.isFiltered
-          ? [...state.filteredTracks]
-          : [...state.tracks];
-        tracks.sort((a, b) => (a.release_date > b.release_date ? 1 : -1));
-        console.log(tracks);
-        state.filteredTracks = tracks;
-      }
-      if (state.sortStatus === "по умолчанию") {
-        console.log(state.isFiltered);
-        const tracks = state.isFiltered
+      const tracks = state.isFiltered
         ? [...state.filteredTracks]
         : [...state.tracks];
-      tracks.sort((a, b) => (a.id < b.id ? 1 : -1));
-      state.filteredTracks = tracks;
-        // state.filteredTracks = prevFilteredTracks;
-          // ? prevFilteredTracks
-          // : state.tracks;
+      if (state.sortStatus === "сначала новые") {
+        tracks.sort((a, b) => (a.release_date < b.release_date ? 1 : -1));
+      } else if (state.sortStatus === "сначала старые") {
+        tracks.sort((a, b) => (a.release_date > b.release_date ? 1 : -1));
+      } else if (state.sortStatus === "по умолчанию") {
+        tracks.sort((a, b) => (a.id < b.id ? 1 : -1));
       }
-      // state.isFiltered = state.sortStatus !== "по умолчанию";
+      state.filteredTracks = tracks;
     },
     setFilters: (
       state,
