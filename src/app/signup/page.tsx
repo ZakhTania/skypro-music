@@ -26,7 +26,6 @@ export default function Signup() {
   const isEmailErr = error.email?.length !== 0;
   const isUsernameErr = error.username?.length !== 0;
   const isPasswordErr = error.password?.length !== 0;
-  console.log(isEmailErr, isPasswordErr, isUsernameErr);
   const [userData, setUserData] = useState<userDataType>({
     email: "",
     username: "",
@@ -47,7 +46,6 @@ export default function Signup() {
       username: userData.username,
     })
       .then(() => {
-
         router.replace("/signin");
       })
       .catch((error) => {
@@ -93,6 +91,7 @@ export default function Signup() {
               type="text"
               name="login"
               placeholder="Логин"
+              value={userData.username}
               onChange={(event) =>
                 setUserData({ ...userData, username: event.target.value })
               }
@@ -108,6 +107,7 @@ export default function Signup() {
               type="password"
               name="password"
               placeholder="Пароль"
+              value={userData.password}
               onChange={(event) =>
                 setUserData({ ...userData, password: event.target.value })
               }

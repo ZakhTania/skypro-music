@@ -5,15 +5,15 @@ type AuthStateType = {
   authState: boolean;
   user: {
     id: number | null;
-    first_name: string,
-    last_name: string,
+    first_name: string;
+    last_name: string;
     username: string;
     email: string;
   };
   token: {
-    access: string,
-    refresh: string,
-  }
+    access: string;
+    refresh: string;
+  };
 };
 
 const initialState: AuthStateType = {
@@ -28,7 +28,7 @@ const initialState: AuthStateType = {
   token: {
     access: "",
     refresh: "",
-  }
+  },
 };
 const authSlice = createSlice({
   name: "auth",
@@ -41,8 +41,8 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{
         id: number | null;
-        first_name: string,
-        last_name: string,
+        first_name: string;
+        last_name: string;
         username: string;
         email: string;
       }>
@@ -52,11 +52,12 @@ const authSlice = createSlice({
     setToken: (
       state,
       action: PayloadAction<{
-        access: string,
-        refresh: string,
+        access: string;
+        refresh: string;
       }>
     ) => {
       state.token = action.payload;
+      console.log(state.token);
     },
   },
 });
