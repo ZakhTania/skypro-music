@@ -3,11 +3,15 @@ import { SVG } from "@/components/SVG";
 import styles from "./PlayerTrack.module.css";
 import stylesMod from "@/app/Modifiers.module.css";
 import { TrackType } from "@/api/tracksApi";
+import { MouseEvent } from "react";
+
 
 type PlayerTrackType = {
   currentTrack: TrackType | null;
+  isLiked: boolean;
+  handleLikeClick: (event: MouseEvent) => void;
 };
-export default function PlayerTrack({ currentTrack }: PlayerTrackType) {
+export default function PlayerTrack({ currentTrack, isLiked, handleLikeClick }: PlayerTrackType) {
   return (
     <div className={styles.trackPlay}>
       <div className={styles.contain}>
@@ -26,9 +30,12 @@ export default function PlayerTrack({ currentTrack }: PlayerTrackType) {
         </div>
       </div>
 
-      <div className={styles.likeDis}>
-        <div className={cn(styles.like, stylesMod.btnIcon)}>
-          <SVG className={styles.likeSvg} icon="icon-like" />
+      <div className={styles.likeDis} onClick={handleLikeClick}>
+        <div>
+          <SVG className={cn(
+              styles.likeSvg,
+              isLiked ? stylesMod.btnLiked : stylesMod.btnDontliked
+            )} icon="icon-like" />
         </div>
         {/* <div className={cn(styles.dislike, stylesMod.btnIcon)}>
           <SVG className={styles.dislikeSvg} icon="icon-dislike" />

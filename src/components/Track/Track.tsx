@@ -1,17 +1,14 @@
 "use client";
-import timeFormat from "@/lib/timeFormat";
-import { SVG } from "../SVG";
+import cn from "classnames";
 import styles from "./Track.module.css";
 import stylesMod from "@/app/Modifiers.module.css";
+import timeFormat from "@/lib/timeFormat";
+import { SVG } from "../SVG";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { TrackType } from "@/api/tracksApi";
-import { setCurrentTrack } from "@/store/features/playlistSlice";
+import getTracks, { TrackType } from "@/api/tracksApi";
+import { setCurrentTrack, setIsLiked } from "@/store/features/playlistSlice";
 import { MouseEvent, useEffect, useRef } from "react";
-import cn from "classnames";
-import {
-  deleteFavoriteTrack,
-  postFavoriteTrack,
-} from "@/api/favoriteTracksAPI";
+import { changeLike } from "@/api/favoriteTracksAPI";
 
 type TrackPropsType = {
   track: TrackType;
@@ -19,20 +16,13 @@ type TrackPropsType = {
   isLiked: boolean;
 };
 export default function Track({ track, tracks, isLiked }: TrackPropsType) {
-  const { name, author, album, duration_in_seconds, id, stared_user } = track;
+  const { name, author, album, duration_in_seconds, id } = track;
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((store) => store.playlist.currentTrack);
   const currentTrackRef = useRef<HTMLDivElement | null>(null);
   const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
-  // const authID = JSON.parse(Cookies.get("user") ?? "").id;
-  // const [isLiked, setIsLiked] = useState(false);
-  // useEffect(() => {
-  //   if( authID !== undefined) {
-  //     setIsLiked(!!stared_user.find(({ id }) => id === authID));
-  //   }
+  const tokens = useAppSelector((store) => store.auth.tokens);
 
-  // }, [stared_user, authID]);
-  const accessToken = useAppSelector((store) => store.auth.token.access);
   useEffect(() => {
     if (!currentTrackRef.current) {
       return;
@@ -45,15 +35,21 @@ export default function Track({ track, tracks, isLiked }: TrackPropsType) {
   const handleLikeClick = (event: MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
-    if (isLiked) {
-      deleteFavoriteTrack(accessToken, id);
-    } else {
-      postFavoriteTrack(accessToken, id);
-    }
+    changeLike(tokens, id, isLiked)
+      .then(() => {
+        getTracks();
+      })
+      .catch((error) => {
+        console.warn(JSON.parse(error.message));
+      })
   };
+
   return (
     <div
-      onClick={() => dispatch(setCurrentTrack({ currentTrack: track, tracks }))}
+      onClick={() => {
+        dispatch(setCurrentTrack({ currentTrack: track, tracks }));
+        dispatch(setIsLiked(isLiked))
+      }}
       className={styles.playlistItem}
     >
       <div className={styles.track}>

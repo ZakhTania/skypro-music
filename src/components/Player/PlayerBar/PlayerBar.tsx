@@ -1,19 +1,24 @@
 "use client";
 import styles from "./PlayerBar.module.css";
 import timeFormat from "@/lib/timeFormat";
-import { useRef, useState } from "react";
+import { MouseEvent, useRef, useState } from "react";
 import { ProgressBar } from "@/components/Player/ProgressBar";
 import { PlayerControls } from "@/components/Player/PlayerControls";
 import { PlayerTrack } from "@/components/Player/PlayerTrack";
 import { Volume } from "@/components/Player/Volume";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { nextTrack, setIsPlaying } from "@/store/features/playlistSlice";
+import { changeLike } from "@/api/favoriteTracksAPI";
 
 export default function PlayerBar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((store) => store.playlist.currentTrack);
   const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
+  const tokens = useAppSelector((store) => store.auth.tokens);
+  const id = currentTrack?.id || 0;
+  const isLiked = useAppSelector((store) => store.playlist.isLiked);
+
   const [isLooping, setIsLooping] = useState(false);
   const [currentProgress, setCurrentProgress] = useState(0);
   const [volume, setVolume] = useState(0.2);
@@ -59,6 +64,15 @@ export default function PlayerBar() {
     audioRef.current.currentTime = e;
   };
 
+  const handleLikeClick = (event: MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    changeLike(tokens, id, isLiked)
+      .catch((error) => {
+        console.warn(JSON.parse(error.message));
+      });
+  };
+
   if (audioRef.current?.ended) {
     dispatch(nextTrack());
   }
@@ -78,7 +92,7 @@ export default function PlayerBar() {
           />
           <div className={styles.barContent}>
             <div className={styles.elapsedOverDuration}>
-                { elapsedDisplay } / { durationDisplay }
+              {elapsedDisplay} / {durationDisplay}
             </div>
             <ProgressBar
               currentProgress={currentProgress}
@@ -93,7 +107,11 @@ export default function PlayerBar() {
                   toggleLoop={toggleLoop}
                   isLooping={isLooping}
                 />
-                <PlayerTrack currentTrack={currentTrack} />
+                <PlayerTrack
+                  currentTrack={currentTrack}
+                  isLiked={isLiked}
+                  handleLikeClick={handleLikeClick}
+                />
               </div>
               <Volume volume={volume} onVolumeChange={handleVolumeChange} />
             </div>

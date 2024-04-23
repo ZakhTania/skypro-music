@@ -28,7 +28,7 @@ export default function PlaylistContent({
   const authID = useAppSelector((store) => store.auth.user.id);
   useEffect(() => {
     dispatch(setTracks(tracks));
-  }, [tracks]);
+  }, [dispatch, tracks]);
 
   const currentTracks = isFiltered ? filteredTracks : tracks;
 
