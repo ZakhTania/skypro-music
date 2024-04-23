@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export default function WithAuth(WrappedComponent: any) {
   const Component = (props: any) => {
     const Router = useRouter();
-    const userToken = useAppSelector((store) => store.auth.token.access)
+    const userToken = useAppSelector((store) => store.auth.tokens.refresh)
 
     // Проверка аутентификации пользователя
     const isAuth = !!userToken; // Пример проверки аутентификации

@@ -1,17 +1,27 @@
+import { getRefresh } from "./userAPI";
+
 const FAVORITE_TRACK_URL =
   "https://skypro-music-api.skyeng.tech/catalog/track/";
 const ALL_FAVORITE_TRACKS_URL =
   "https://skypro-music-api.skyeng.tech/catalog/track/favorite/all/";
 
-export async function getAllFavorites(accessToken: string) {
-  console.log(accessToken);
+type TokensType = {
+  access: string;
+  refresh: string;
+};
+export async function getAllFavorites(tokens: TokensType) {
   const response = await fetch(ALL_FAVORITE_TRACKS_URL, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${tokens.access}`,
     },
   });
   const responseData = await response.json();
+  if (response.status === 401) {
+    const newAccessToken = await getRefresh(tokens.refresh);
+    getAllFavorites(newAccessToken);
+    return;
+  }
 
   if (!response.ok) {
     throw new Error(JSON.stringify(responseData));
@@ -20,35 +30,23 @@ export async function getAllFavorites(accessToken: string) {
   return responseData;
 }
 
-export async function postFavoriteTrack(accessToken: string, id: number) {
-  console.log(id);
-  console.log(accessToken);
-  console.log(FAVORITE_TRACK_URL + `${id}/favorite/`);
-
+export async function changeLike(
+  tokens: TokensType,
+  id: number,
+  isLiked: boolean
+) {
   const response = await fetch(FAVORITE_TRACK_URL + `${id}/favorite/`, {
-    method: "POST",
+    method: isLiked ? "DELETE" : "POST",
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${tokens.access}`,
     },
   });
   const responseData = await response.json();
-
-  if (!response.ok) {
-    throw new Error(JSON.stringify(responseData));
+  if (response.status === 401) {
+    const newAccessToken = await getRefresh(tokens.refresh);
+    changeLike(newAccessToken, id, isLiked);
+    return;
   }
-
-  return responseData;
-}
-
-export async function deleteFavoriteTrack(accessToken: string, id: number) {
-  const response = await fetch(FAVORITE_TRACK_URL + `${id}/favorite/`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const responseData = await response.json();
-
   if (!response.ok) {
     throw new Error(JSON.stringify(responseData));
   }

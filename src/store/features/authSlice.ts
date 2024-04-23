@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { access } from "fs";
 
 type AuthStateType = {
   authState: boolean;
@@ -10,7 +9,7 @@ type AuthStateType = {
     username: string;
     email: string;
   };
-  token: {
+  tokens: {
     access: string;
     refresh: string;
   };
@@ -25,7 +24,7 @@ const initialState: AuthStateType = {
     last_name: "",
     email: "",
   },
-  token: {
+  tokens: {
     access: "",
     refresh: "",
   },
@@ -47,7 +46,9 @@ const authSlice = createSlice({
         email: string;
       }>
     ) => {
-      state.user = action.payload;
+      const user = action.payload;
+      state.user = user;
+      localStorage.setItem("user", JSON.stringify(user));
     },
     setToken: (
       state,
@@ -56,11 +57,28 @@ const authSlice = createSlice({
         refresh: string;
       }>
     ) => {
-      state.token = action.payload;
-      console.log(state.token);
+      const tokens = action.payload;
+      state.tokens = tokens;
+      localStorage.setItem("tokens", JSON.stringify(tokens));
+    },
+    removeAuth: (state) => {
+      state.user = {
+        id: null,
+        username: "",
+        first_name: "",
+        last_name: "",
+        email: "",
+      };
+      state.tokens = {
+        access: "",
+        refresh: "",
+      };
+      localStorage.removeItem("tokens");
+      localStorage.removeItem("user");
     },
   },
 });
 
-export const { setAuthState, setUser, setToken } = authSlice.actions;
+export const { setAuthState, setUser, setToken, removeAuth } =
+  authSlice.actions;
 export const authReducer = authSlice.reducer;

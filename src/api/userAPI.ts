@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 
 type UserDataType = {
   email: string;
@@ -51,8 +50,7 @@ export async function getLogin({ email, password }: UserDataType) {
   if (!response.ok) {
     throw new Error(JSON.stringify(responseData));
   }
-  Cookies.set("user", JSON.stringify(responseData));
-  console.log(JSON.parse(Cookies.get("user") || "").username);
+
   return responseData;
 }
 
@@ -73,7 +71,7 @@ export async function getToken({ email, password }: UserDataType) {
   if (!response.ok) {
     throw new Error(JSON.stringify(responseData));
   }
-  Cookies.set("tokens", JSON.stringify(responseData));
+
   return responseData;
 }
 
