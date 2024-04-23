@@ -1,24 +1,28 @@
 "use client";
 import { SVG } from "@/components/SVG";
 import styles from "./Personal.module.css";
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/hooks/hooks";
+import { removeAuth } from "@/store/features/authSlice";
 
 export default function Personal() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [userName, setUserName] = useState("Войти");
-  const user = Cookies.get("user");
+
   useEffect(() => {
-    if (user !== undefined) {
-      setUserName(JSON.parse(user ?? "").username);
+    let user;
+    user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (Object.keys(user).length === 0) {
+      return;
     }
-  }, [user]);
+    setUserName(user.username);
+  }, []);
 
   function toggleAuth() {
     if (userName !== "Войти") {
-      Cookies.remove("user");
-      Cookies.remove("tokens");
+      dispatch(removeAuth());
       setUserName("Войти");
       return;
     }

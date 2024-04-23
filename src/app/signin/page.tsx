@@ -35,7 +35,10 @@ export default function Signin() {
   }
 
   function getAuth() {
-    console.log(userData);
+    setError({
+      email: [],
+      password: [],
+    });
     getLogin({ email: userData.email, password: userData.password })
       .then((user) => {
         console.log(user);
@@ -80,6 +83,9 @@ export default function Signin() {
               placeholder="Почта"
               value={userData.email}
               onChange={(event) => handelInputChange(event)}
+              onClick={() => {
+                setError({ ...error, email: [] });
+              }}
             />
             {isPasswordErr && (
               <p className={styles.errorText}>{error.password[0]}</p>
@@ -91,6 +97,9 @@ export default function Signin() {
               placeholder="Пароль"
               value={userData.password}
               onChange={(event) => handelInputChange(event)}
+              onClick={() => {
+                setError({ ...error, email: [] });
+              }}
             />
             <ButtonEnter text="Войти" onClick={getAuth} />
             <ButtonSignUp text="Зарегистрироваться" />
