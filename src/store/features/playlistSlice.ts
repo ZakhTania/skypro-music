@@ -6,6 +6,7 @@ type TrackListType = {
   isShuffled: boolean;
   shuffledTracks: [] | TrackType[];
   currentTrack: null | TrackType;
+  isLiked: boolean;
   isPlaying: boolean;
   isFiltered: boolean;
   sortStatus: string;
@@ -26,6 +27,7 @@ const initialState: TrackListType = {
   isShuffled: false,
   shuffledTracks: [],
   currentTrack: null,
+  isLiked: false,
   isPlaying: true,
   isFiltered: false,
   sortStatus: "по умолчанию",
@@ -46,6 +48,9 @@ const playlistSlice = createSlice({
     },
     toggleShuffled: (state) => {
       state.isShuffled = !state.isShuffled;
+    },
+    setIsLiked: (state, action: PayloadAction<boolean>) => {
+      state.isLiked = action.payload;
     },
     setIsPlaying: (state, action: PayloadAction<boolean>) => {
       state.isPlaying = action.payload;
@@ -131,6 +136,7 @@ function changeTrack(direction: number) {
 export const {
   setTracks,
   toggleShuffled,
+  setIsLiked,
   setIsPlaying,
   setCurrentTrack,
   nextTrack,

@@ -1,19 +1,18 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { access } from "fs";
 
 type AuthStateType = {
   authState: boolean;
   user: {
     id: number | null;
-    first_name: string,
-    last_name: string,
+    first_name: string;
+    last_name: string;
     username: string;
     email: string;
   };
-  token: {
-    access: string,
-    refresh: string,
-  }
+  tokens: {
+    access: string;
+    refresh: string;
+  };
 };
 
 const initialState: AuthStateType = {
@@ -25,10 +24,10 @@ const initialState: AuthStateType = {
     last_name: "",
     email: "",
   },
-  token: {
+  tokens: {
     access: "",
     refresh: "",
-  }
+  },
 };
 const authSlice = createSlice({
   name: "auth",
@@ -41,25 +40,45 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{
         id: number | null;
-        first_name: string,
-        last_name: string,
+        first_name: string;
+        last_name: string;
         username: string;
         email: string;
       }>
     ) => {
-      state.user = action.payload;
+      const user = action.payload;
+      state.user = user;
+      localStorage.setItem("user", JSON.stringify(user));
     },
     setToken: (
       state,
       action: PayloadAction<{
-        access: string,
-        refresh: string,
+        access: string;
+        refresh: string;
       }>
     ) => {
-      state.token = action.payload;
+      const tokens = action.payload;
+      state.tokens = tokens;
+      localStorage.setItem("tokens", JSON.stringify(tokens));
+    },
+    removeAuth: (state) => {
+      state.user = {
+        id: null,
+        username: "",
+        first_name: "",
+        last_name: "",
+        email: "",
+      };
+      state.tokens = {
+        access: "",
+        refresh: "",
+      };
+      localStorage.removeItem("tokens");
+      localStorage.removeItem("user");
     },
   },
 });
 
-export const { setAuthState, setUser, setToken } = authSlice.actions;
+export const { setAuthState, setUser, setToken, removeAuth } =
+  authSlice.actions;
 export const authReducer = authSlice.reducer;

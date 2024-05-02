@@ -1,17 +1,19 @@
 "use client";
+import { useAppSelector } from "@/hooks/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function WithAuth(WrappedComponent: any) {
   const Component = (props: any) => {
     const Router = useRouter();
+    const userToken = useAppSelector((store) => store.auth.tokens.refresh)
 
     // Проверка аутентификации пользователя
-    const isAuth = !!localStorage.getItem("userToken"); // Пример проверки аутентификации
+    const isAuth = !!userToken; // Пример проверки аутентификации
 
     useEffect(() => {
       if (!isAuth) {
-        Router.replace("/login"); // Перенаправление на страницу входа, если пользователь не аутентифицирован
+        Router.replace("/signin"); // Перенаправление на страницу входа, если пользователь не аутентифицирован
       }
     }, [isAuth, Router]);
 

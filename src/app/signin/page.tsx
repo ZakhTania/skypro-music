@@ -13,15 +13,15 @@ import { useAppDispatch } from "@/hooks/hooks";
 import { setToken, setUser } from "@/store/features/authSlice";
 import { useRouter } from "next/navigation";
 
-
 export default function Signin() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [error, setError] = useState({
     email: [],
-    username: [],
     password: [],
   });
+  const isEmailErr = error.email?.length !== 0;
+  const isPasswordErr = error.password?.length !== 0;
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -35,25 +35,27 @@ export default function Signin() {
   }
 
   function getAuth() {
+    setError({
+      email: [],
+      password: [],
+    });
     getLogin({ email: userData.email, password: userData.password })
       .then((user) => {
+        console.log(user);
         dispatch(setUser(user));
         router.replace("/");
         return user;
       })
-      .catch((error) => {
-        setError(JSON.parse(error.message));
-      })
-      .then((user) => {
-        return getToken({ email: user.email, password: user.password });
+      .then(() => {
+        return getToken({ email: userData.email, password: userData.password });
       })
       .then((tokenData) => {
         dispatch(
           setToken({ access: tokenData.access, refresh: tokenData.refresh })
         );
-        // localStorage.setItemItem("userToken", tokenData.access);
       })
       .catch((error) => {
+        setError(JSON.parse(error.message));
         console.warn(JSON.parse(error.message));
       });
   }
@@ -73,19 +75,31 @@ export default function Signin() {
                 />
               </div>
             </Link>
+            {isEmailErr && <p className={styles.errorText}>{error.email[0]}</p>}
             <input
               className={styles.input}
               type="text"
               name="email"
               placeholder="Почта"
+              value={userData.email}
               onChange={(event) => handelInputChange(event)}
+              onClick={() => {
+                setError({ ...error, email: [] });
+              }}
             />
+            {isPasswordErr && (
+              <p className={styles.errorText}>{error.password[0]}</p>
+            )}
             <input
               className={styles.input}
               type="password"
               name="password"
               placeholder="Пароль"
+              value={userData.password}
               onChange={(event) => handelInputChange(event)}
+              onClick={() => {
+                setError({ ...error, email: [] });
+              }}
             />
             <ButtonEnter text="Войти" onClick={getAuth} />
             <ButtonSignUp text="Зарегистрироваться" />

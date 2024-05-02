@@ -1,22 +1,34 @@
 "use client";
+import cn from "classnames";
+import styles from "./Track.module.css";
+import stylesMod from "@/app/Modifiers.module.css";
 import timeFormat from "@/lib/timeFormat";
 import { SVG } from "../SVG";
-import styles from "./Track.module.css";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { TrackType } from "@/api/tracksApi";
-import { setCurrentTrack } from "@/store/features/playlistSlice";
-import { useEffect, useRef } from "react";
+import getTracks, { TrackType } from "@/api/tracksApi";
+import { setCurrentTrack, setIsLiked } from "@/store/features/playlistSlice";
+import { MouseEvent, useEffect, useRef } from "react";
+import { changeLike } from "@/api/favoriteTracksAPI";
+import {
+  trackAPI,
+  useSetDisLikeMutation,
+  useSetLikeMutation,
+} from "@/store/api/trackAPI";
 
 type TrackPropsType = {
   track: TrackType;
   tracks: TrackType[];
+  isLiked: boolean;
 };
-export default function Track({ track, tracks }: TrackPropsType) {
+export default function Track({ track, tracks, isLiked }: TrackPropsType) {
   const { name, author, album, duration_in_seconds, id } = track;
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((store) => store.playlist.currentTrack);
   const currentTrackRef = useRef<HTMLDivElement | null>(null);
   const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
+  const tokens = useAppSelector((store) => store.auth.tokens);
+  const [setLike] = useSetLikeMutation();
+  const [setDisLike] = useSetDisLikeMutation();
   useEffect(() => {
     if (!currentTrackRef.current) {
       return;
@@ -26,9 +38,23 @@ export default function Track({ track, tracks }: TrackPropsType) {
       behavior: "smooth",
     });
   }, [currentTrack]);
+  const handleLikeClick = async (event: MouseEvent) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (isLiked) {
+      await setDisLike({ id });
+    } else {
+      await setLike({ id });
+    }
+    trackAPI.util.invalidateTags(["tracks"]);
+  };
+
   return (
     <div
-      onClick={() => dispatch(setCurrentTrack({ currentTrack: track, tracks }))}
+      onClick={() => {
+        dispatch(setCurrentTrack({ currentTrack: track, tracks }));
+        dispatch(setIsLiked(isLiked));
+      }}
       className={styles.playlistItem}
     >
       <div className={styles.track}>
@@ -54,8 +80,14 @@ export default function Track({ track, tracks }: TrackPropsType) {
         <div className={styles.album}>
           <div className={styles.albumLink}>{album}</div>
         </div>
-        <div>
-          <SVG className={styles.timeSvg} icon="icon-like " />
+        <div onClick={(event: MouseEvent) => handleLikeClick(event)}>
+          <SVG
+            className={cn(
+              styles.likeSvg,
+              isLiked ? stylesMod.btnLiked : stylesMod.btnDontliked
+            )}
+            icon="icon-like "
+          />
           <span className={styles.timeText}>
             {timeFormat(duration_in_seconds)}
           </span>

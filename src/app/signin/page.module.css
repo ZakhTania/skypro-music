@@ -72,4 +72,6 @@
     letter-spacing: -0.05px;
     color: #D0CECE;
 }
-
+.errorText {
+    color: #ff0000;
+}

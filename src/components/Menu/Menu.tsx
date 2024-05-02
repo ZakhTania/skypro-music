@@ -19,7 +19,7 @@ export default function Menu() {
               </Link>
             </li>
             <li className={styles.menuItem}>
-              <Link href={"/favorite"} className={styles.menuLink}>
+              <Link href={"/tracks/favorite"} className={styles.menuLink}>
                 Мой плейлист
               </Link>
             </li>

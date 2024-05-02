@@ -1,20 +1,14 @@
-import { getAllFavorites } from "@/api/favoriteTracksAPI";
-import TracksLayout from "@/components/TracksLayout/TracksLayout";
+"use client";
+import WithAuth from "@/HOC/withAuth";
+import { FavoritePageWrap } from "@/components/FavoritePageWrap";
 
-
-// export default async function FavoritePage() {
-//     let favoriteTracksList;
-//     try {
-//         favoriteTracksList = await getAllFavorites();
-//     } catch (error: any) {
-//       throw new Error(error.message);
-//     }
-//   return (
-//       <TracksLayout
-//         title="Мои треки"
-//         tracks={favoriteTracksList}
-//         isFilter={false}
-//         isSidebar={false}
-//       />
-//   );
-// }
+function FavoritePage() {
+  const tokens = JSON.parse(localStorage.getItem("tokens") || "{}");
+  console.log(tokens);
+  return (
+    <FavoritePageWrap
+      tokens={tokens}
+    />
+  );
+}
+export default WithAuth(FavoritePage);
