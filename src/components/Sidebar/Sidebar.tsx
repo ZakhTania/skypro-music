@@ -5,13 +5,13 @@ import { PlaylistCover } from "@/components/PlaylistCover";
 type SidebarType = {
   isSidebar: boolean;
 };
-export default async function Sidebar({ isSidebar }: SidebarType) {
-  let playLists: SelectionListType[];
-  try {
-    playLists = await getPlayLists();
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
+export default function Sidebar({ isSidebar }: SidebarType) {
+  let playLists: SelectionListType[] | [] = [];
+  // try {
+  //   playLists = await getPlayLists();
+  // } catch (error: any) {
+  //   throw new Error(error.message);
+  // }
 
   return (
     <div className={styles.sidebar}>
@@ -19,7 +19,7 @@ export default async function Sidebar({ isSidebar }: SidebarType) {
       <div className={styles.block}>
         {isSidebar && (
           <div className={styles.list}>
-            {playLists.map((playList, index) => {
+            {playLists?.map((playList, index) => {
               return (
                 <PlaylistCover
                   key={`playList${index}`}

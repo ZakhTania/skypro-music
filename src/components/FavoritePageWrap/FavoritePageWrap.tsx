@@ -1,5 +1,7 @@
+"use client";
 import { getAllFavorites } from "@/api/favoriteTracksAPI";
 import TracksLayout from "../TracksLayout/TracksLayout";
+import { useGetFavoritesTrackQuery } from "@/store/api/trackAPI";
 
 type FavoritePageType = {
   tokens: {
@@ -7,14 +9,14 @@ type FavoritePageType = {
     refresh: string;
   };
 };
-export default async function FavoritePageWrap({ tokens }: FavoritePageType) {
-  let favoriteTracksList;
-  try {
-    favoriteTracksList = await getAllFavorites(tokens);
-  } catch (error: any) {
-    throw new Error(error.message);
-  }
-
+export default function FavoritePageWrap({ tokens }: FavoritePageType) {
+  // let favoriteTracksList;
+  // try {
+  //   favoriteTracksList = await getAllFavorites(tokens);
+  // } catch (error: any) {
+  //   throw new Error(error.message);
+  // }
+  const { data: favoriteTracksList = [] } = useGetFavoritesTrackQuery();
   return (
     <TracksLayout
       title="Мои треки"

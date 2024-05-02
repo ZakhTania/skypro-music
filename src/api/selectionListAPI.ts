@@ -14,7 +14,7 @@ export type SelectionListType = {
 };
 
 const SELECTION_URL = "https://skypro-music-api.skyeng.tech/catalog/selection/";
-export async function getPlayLists(): Promise<SelectionListType[]> {
+export async function getPlayLists(): Promise<SelectionListType> {
   const response = await fetch(SELECTION_URL, {
     method: "GET",
   });

@@ -9,6 +9,11 @@ import getTracks, { TrackType } from "@/api/tracksApi";
 import { setCurrentTrack, setIsLiked } from "@/store/features/playlistSlice";
 import { MouseEvent, useEffect, useRef } from "react";
 import { changeLike } from "@/api/favoriteTracksAPI";
+import {
+  trackAPI,
+  useSetDisLikeMutation,
+  useSetLikeMutation,
+} from "@/store/api/trackAPI";
 
 type TrackPropsType = {
   track: TrackType;
@@ -22,7 +27,8 @@ export default function Track({ track, tracks, isLiked }: TrackPropsType) {
   const currentTrackRef = useRef<HTMLDivElement | null>(null);
   const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
   const tokens = useAppSelector((store) => store.auth.tokens);
-
+  const [setLike] = useSetLikeMutation();
+  const [setDisLike] = useSetDisLikeMutation();
   useEffect(() => {
     if (!currentTrackRef.current) {
       return;
@@ -32,23 +38,22 @@ export default function Track({ track, tracks, isLiked }: TrackPropsType) {
       behavior: "smooth",
     });
   }, [currentTrack]);
-  const handleLikeClick = (event: MouseEvent) => {
+  const handleLikeClick = async (event: MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
-    changeLike(tokens, id, isLiked)
-      .then(() => {
-        getTracks();
-      })
-      .catch((error) => {
-        console.warn(JSON.parse(error.message));
-      })
+    if (isLiked) {
+      await setDisLike({ id });
+    } else {
+      await setLike({ id });
+    }
+    trackAPI.util.invalidateTags(["tracks"]);
   };
 
   return (
     <div
       onClick={() => {
         dispatch(setCurrentTrack({ currentTrack: track, tracks }));
-        dispatch(setIsLiked(isLiked))
+        dispatch(setIsLiked(isLiked));
       }}
       className={styles.playlistItem}
     >
