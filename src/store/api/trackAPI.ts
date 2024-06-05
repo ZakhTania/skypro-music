@@ -13,8 +13,11 @@ export const trackAPI = createApi({
       query: () => "track/all",
       providesTags: ["tracks"],
     }),
-    getSelectionList: builder.query<SelectionListType, { id: string }>({
-      query: ({ id }) => `selection/${id}`,
+    getSelectionList: builder.query<SelectionListType[], void>({
+      query: () => `selection/`,
+    }),
+    getSelection: builder.query<SelectionListType, { id: string }>({
+      query: ({ id }) => `selection/${id}/`,
     }),
     getFavoritesTrack: builder.query<TrackType[], void>({
       query: () => ({
@@ -23,6 +26,7 @@ export const trackAPI = createApi({
           Authorization: `Bearer ${getTokenFromLS().access}`,
         },
       }),
+      providesTags: ["tracks"],
     }),
     setLike: builder.mutation({
       query: ({ id }) => ({
@@ -49,6 +53,7 @@ export const trackAPI = createApi({
 export const {
   useGetTracksQuery,
   useGetSelectionListQuery,
+  useGetSelectionQuery,
   useGetFavoritesTrackQuery,
   useSetLikeMutation,
   useSetDisLikeMutation,

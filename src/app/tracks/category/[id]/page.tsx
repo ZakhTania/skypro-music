@@ -1,7 +1,6 @@
 "use client";
-import { getSelectionList } from "@/api/selectionListAPI";
 import TracksLayout from "@/components/TracksLayout/TracksLayout";
-import { useGetSelectionListQuery } from "@/store/api/trackAPI";
+import { useGetSelectionQuery } from "@/store/api/trackAPI";
 
 type CategoryType = {
   params: {
@@ -16,10 +15,11 @@ export default function Category({ params }: CategoryType) {
   // } catch (error: any) {
   //   throw new Error(error.message);
   // }
-  const { data: selectionList } = useGetSelectionListQuery({ id: params.id });
+// console.log(params.id);
+  const { data: selectionList } = useGetSelectionQuery({ id: params.id });
   return (
     <TracksLayout
-      title={selectionList?.name || ""}
+      title={selectionList?.items[0].genre || ""}
       tracks={selectionList?.items || []}
       isFilter={false}
       isSidebar={false}

@@ -8,12 +8,14 @@ import { PlayerTrack } from "@/components/Player/PlayerTrack";
 import { Volume } from "@/components/Player/Volume";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { nextTrack, setIsPlaying } from "@/store/features/playlistSlice";
-import { changeLike } from "@/api/favoriteTracksAPI";
+import { trackAPI, useSetDisLikeMutation, useSetLikeMutation } from "@/store/api/trackAPI";
 
 export default function PlayerBar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((store) => store.playlist.currentTrack);
+  const [setLike] = useSetLikeMutation();
+  const [setDisLike] = useSetDisLikeMutation();
   const isPlaying = useAppSelector((store) => store.playlist.isPlaying);
   const tokens = useAppSelector((store) => store.auth.tokens);
   const id = currentTrack?.id || 0;
@@ -64,14 +66,17 @@ export default function PlayerBar() {
     audioRef.current.currentTime = e;
   };
 
-  const handleLikeClick = (event: MouseEvent) => {
+  const handleLikeClick = async (event: MouseEvent) => {
     event.stopPropagation();
     event.preventDefault();
-    changeLike(tokens, id, isLiked)
-      .catch((error) => {
-        console.warn(JSON.parse(error.message));
-      });
+    if (isLiked) {
+      await setDisLike({ id });
+    } else {
+      await setLike({ id });
+    }
+    trackAPI.util.invalidateTags(["tracks"]);
   };
+
 
   if (audioRef.current?.ended) {
     dispatch(nextTrack());

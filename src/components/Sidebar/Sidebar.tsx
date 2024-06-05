@@ -2,17 +2,18 @@ import { SelectionListType, getPlayLists } from "@/api/selectionListAPI";
 import styles from "./Sidebar.module.css";
 import { Personal } from "@/components/Personal";
 import { PlaylistCover } from "@/components/PlaylistCover";
+import { useGetSelectionListQuery } from "@/store/api/trackAPI";
 type SidebarType = {
   isSidebar: boolean;
 };
 export default function Sidebar({ isSidebar }: SidebarType) {
-  let playLists: SelectionListType[] | [] = [];
+  // let playLists: SelectionListType[] | [] = [];
   // try {
   //   playLists = await getPlayLists();
   // } catch (error: any) {
   //   throw new Error(error.message);
   // }
-
+  const { data: playLists = [] } = useGetSelectionListQuery();
   return (
     <div className={styles.sidebar}>
       <Personal />
@@ -24,7 +25,7 @@ export default function Sidebar({ isSidebar }: SidebarType) {
                 <PlaylistCover
                   key={`playList${index}`}
                   src={`/img/playlist0${index + 1}.png`}
-                  alt={String(playList.name)}
+                  alt={playList.items[0].genre}
                   id={`${playList.id}`}
                 />
               );

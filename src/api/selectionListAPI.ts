@@ -10,7 +10,6 @@ export type SelectionListType = {
     last_name: string;
     email: string;
   };
-  name: string;
 };
 
 const SELECTION_URL = "https://skypro-music-api.skyeng.tech/catalog/selection/";
